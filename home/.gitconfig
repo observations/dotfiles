@@ -29,7 +29,7 @@ email = applicatives@gmail.com
 	last = log -1 HEAD
 
 	# Show log with diff  (-p )and 2 is for number of entries shown
-  ld2 = log -p -2
+    ld2 = log -p -2
 
 	# View all changes since last commit
 	wc = whatchanged
@@ -55,7 +55,7 @@ email = applicatives@gmail.com
 	## lsf branchname
 	lsf = ls-tree -r --name-only
 
-  # List deleted files : find better commands
+    # List deleted files : find better commands
 	lsd = ls-files --deleted
 	rmd = rm -v "git ls-files --deleted"
 
@@ -78,7 +78,7 @@ email = applicatives@gmail.com
 	# dsp = diff  -C --stat -p
 	# dcw = diff  -C --word-diff
 
-  # Diff without deleted files
+    # Diff without deleted files
 	##diff = diff --diff-filter=M ## no seeing deleted files in the diff
 
 	d = diff --diff-filter=M
@@ -108,7 +108,7 @@ email = applicatives@gmail.com
 	gdiff = difftool --gui --no-prompt
 
 	# Undo staged changes
-  undo = reset HEAD
+    undo = reset HEAD
 
 	# Pull in remote changes for the current repository and all its submodules
 	pu = !"git pull; git submodule foreach git pull origin master"
@@ -116,7 +116,7 @@ email = applicatives@gmail.com
 	# Clone a repository including all submodules
 	cl = clone --recursive
 
-  # Commit
+    # Commit
 	cm = commit -m
 	cam = commit -a -m
 	caa = commit --amend
@@ -203,11 +203,11 @@ email = applicatives@gmail.com
 	# Use custom `.gitignore` and `.gitattributes`
 	excludesfile = ~/.gitignore
 	## attributesfile = ~/.gitattributes
-	autocrlf = true
+	autocrlf = input
 	# Treat spaces before tabs and all kinds of trailing whitespace as an error
 	# [default] trailing-space: looks for spaces at the end of a line
 	# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
-	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+	#whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 
 	# Make `git rebase` safer on OS X
 	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>

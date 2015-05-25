@@ -3,22 +3,18 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
-alias ~="cd ~" # `cd` is probably faster to type though
-alias -- -="cd -"
-
 # Shortcuts
 alias db="cd ~/Documents/Dropbox"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias pr="cd ~/projects"
-
+# Git commands
+## usage : git tag -a tagname -m "Message"
+## git tag tagname
+## git tag # to see all tags
+## git checkout tagname to see that version of file
 alias g="git"
 alias gta="git tag -a"
-## usage : git tag -a tagname -m "Message"
-### git tag tagname
-### git tag # to see all tags
-### git checkout tagname # to see that version of file
-
 # archive folder without git info for back up
 ## Use when copying files to pendrive
 ## Usage:ziph ~/bkups/name.zip
@@ -27,30 +23,25 @@ alias gta="git tag -a"
 alias box="git archive --format zip --output C:/Users/G/Dropbox/nameFolder.zip master"
 alias ziph="git archive HEAD --format=zip --output"
 alias zipfolder="git archive --format zip --output=../nameFolder.zip"
-
-
-# Aliases for using homesick to maintain dot files 
+# Aliases for using homesick to maintain dot files
 alias hk=“homesick”
 alias hks=“homesick symlink”
 
 # For most often used terminal commands
+## print what the commands are doing
 alias cl="clear"
 alias ex="exit"
 alias mk="mkdir -v"
-alias rm="rm -v" # make rm verbose
-alias rmdir="rmdir -v" # print what the command is doing
-
-
+alias rm="rm -v"
+alias rmdir="rmdir -v"
 alias h="history"
 alias j="jobs"
-
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
 else # OS X `ls`
 	colorflag="-G"
 fi
-
 # List all files colorized in long format
 alias l="ls -lF ${colorflag}"
 
