@@ -1,0 +1,6 @@
+project_name: newproject
+project_root: ~/code/newproject
+tabs:
+  -text: textmate
+  -preview: bundle exec rake preview
+

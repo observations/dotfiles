@@ -1,0 +1,312 @@
+[user]
+name = Anusha
+email = applicatives@gmail.com
+
+[alias]
+
+	# For bundles, zip folders and backup
+	## Bundle
+	## creates repo.bundle
+	## git clone repo.bundle recreates exact replica of branch or repo
+	## git bundle create <filepath/filename.bundle>  <branchName>
+	## git bundle create repo.bundle master ## for only the master branch
+	## --all --tags --remotes ## for the entire repository
+
+	bc = bundle create
+	## g bc repo.bundle --all
+
+	# Save zipped folder of repo as archive.zip in Dropbox
+	zipit = archive HEAD --format=zip > ~/Dropbox/archive.zip
+
+  # Visual git tree
+	gtag = !gitk --all --simplify-by-decoration
+
+	# View abbreviated SHA, description, and history graph of the latest 20 commits
+	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+	l5 = log --pretty=oneline --abbrev-commit -5
+
+	# View last commit
+	last = log -1 HEAD
+
+	# Show log with diff  (-p )and 2 is for number of entries shown
+  ld2 = log -p -2
+
+	# View all changes since last commit
+	wc = whatchanged
+	# view the last change
+	wc1 = whatchanged -n 1
+
+	# Check when the file was last updated on each local branch
+	datem = "!f() { for b in $(git rev-parse --symbolic --branches); do echo -e `git log --format=%at:%ar -1 $b -- \"$1\"`\\\\t$b; done | sort -r |cut -f2 -d: ; }; f"
+
+
+	# View the current working tree status using the short format
+	s = status
+	ss = status -s
+	co = checkout
+	## Starts as new branch and switches to it
+	cob = checkout -b
+	com = checkout master
+	pom = push master origin
+	b = branch
+	a = add
+
+	# List all files on a branch
+	## lsf branchname
+	lsf = ls-tree -r --name-only
+
+  # List deleted files : find better commands
+	lsd = ls-files --deleted
+	rmd = rm -v "git ls-files --deleted"
+
+	## remove deleted files
+	rmd1 = rm $(git ls-files-deleted)
+
+	## commit absence of certain files
+	rmc = rm --cached ## check
+
+	# Show the diff between the latest commit and the current state
+	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+	# `git di $number` shows the diff between the state `$number` revisions ago and the current state
+	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+
+	# diff options alias
+	# d   = diff  -C
+	# dw  = diff  -C -w
+	# ds  = diff  -C --stat
+	# dsp = diff  -C --stat -p
+	# dcw = diff  -C --word-diff
+
+  # Diff without deleted files
+	##diff = diff --diff-filter=M ## no seeing deleted files in the diff
+
+	d = diff --diff-filter=M
+	wd = diff --color-words ## better with each word diff
+
+	## replace M with other types of changes
+	## --diff-filter=[ACDMRTUXB] letters for  added, copied etc
+
+	## to see what contents have been staged for next snapshot
+	## between index and most recent commit
+
+	dc = diff --cached
+
+	## to see summary of changes rather than full diff
+
+	ds = diff --stat
+
+	### add --stat after any command to see summary output
+	diffcsv = diff --word-diff
+
+	## to see the difference between working dir and the last commit,
+	## ignoring the staging area
+
+	dh = diff HEAD  ## show diff of all staged and unstaged changes
+
+	ldiff = difftool -t latex
+	gdiff = difftool --gui --no-prompt
+
+	# Undo staged changes
+  undo = reset HEAD
+
+	# Pull in remote changes for the current repository and all its submodules
+	pu = !"git pull; git submodule foreach git pull origin master"
+
+	# Clone a repository including all submodules
+	cl = clone --recursive
+
+  # Commit
+	cm = commit -m
+	cam = commit -a -m
+	caa = commit --amend
+
+	## Use for minor changes and modify previous commit message
+	## or put all changes in the previous commit
+
+	cal = commit -a --amend -C HEAD
+	# Commit all changes
+	ca = !git add -A && git commit -av
+
+	# Switch to a branch, creating it if necessary
+	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+	# Show verbose output about tags, branches or remotes
+	tags = tag -l
+	branches = branch -a
+	remotes = remote -v
+
+	# Amend the currently staged files to the latest commit
+	amend = commit --amend --reuse-message=HEAD
+
+	# Credit an author on the latest commit
+	credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
+	# Interactive rebase with the given number of latest commits
+	reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+	# Remove the old tag with this name and tag the latest commit with it.
+	retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
+
+	# Find branches containing commit
+	fb = "!f() { git branch -a --contains $1; }; f"
+
+	# Find tags containing commit
+	ft = "!f() { git describe --always --contains $1; }; f"
+
+	# Find commits by source code
+	fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+	# Find commits by commit message
+	fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+	# Remove branches that have already been merged with master
+	# a.k.a. ‘delete merged’
+	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+	# List contributors with number of commits
+	contributors = shortlog --summary --numbered
+
+	# Merge GitHub pull request on top of the `master` branch
+	mpr = "!f() { \
+		if [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \
+			git fetch origin refs/pull/$1/head:pr/$1 && \
+			git rebase master pr/$1 && \
+			git checkout master && \
+			git merge pr/$1 && \
+			git branch -D pr/$1 && \
+			git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
+		fi \
+	}; f"
+
+
+	###############################################
+	### reset commands
+
+	# r = reset
+	# r1 = reset HEAD^
+	# r2 = reset HEAD^^
+
+	# # hard resets
+
+	# rh = reset --hard ## be careful
+	# rh1 = reset HEAD^ --hard
+	# rh2 = reset HEAD^^ --hard
+
+[apply]
+
+	# Detect whitespace errors when applying a patch
+	whitespace = fix
+
+[core]
+
+	# Use custom `.gitignore` and `.gitattributes`
+	excludesfile = ~/.gitignore
+	## attributesfile = ~/.gitattributes
+	autocrlf = true
+	# Treat spaces before tabs and all kinds of trailing whitespace as an error
+	# [default] trailing-space: looks for spaces at the end of a line
+	# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
+	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+
+	# Make `git rebase` safer on OS X
+	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
+	trustctime = false
+
+	# Prevent showing files whose names contain non-ASCII symbols as unversioned.
+	# http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
+	precomposeunicode = false
+
+[color]
+
+	# Use colors in Git commands that are capable of colored output when
+	# outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+	ui = auto
+	#ui = always
+	#ui = true
+
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	pager = true
+
+
+[color "branch"]
+
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+
+	meta = yellow bold
+	frag = cyan bold # line info
+	old = red # deletions
+	new = green bold # additions
+  whitespace = white
+
+[color "status"]
+
+	added = yellow
+	changed = green
+	untracked = cyan
+
+[diff]
+
+	# Detect copies as well as renames
+	renames = copies
+	##tool = kdiff3
+
+[diff "csv"]
+wordRegex = [^,\n]+[,\n]|[,]
+
+#[difftool.latex]
+##cmd = git-latexdiff "$LOCAL" "$REMOTE"
+
+
+[help]
+
+	# Automatically correct and execute mistyped commands
+	autocorrect = 1
+
+[merge]
+
+	# Include summaries of merged commits in newly created merge commit messages
+	log = true
+	## Can also use vimdiff as diff and merge tool
+	## Kdiff3 is useful on Windows
+	## tool = kdiff3
+	## conflictsyle = kdiff3
+
+[push]
+
+	# Use the Git 1.x.x default to avoid errors on machines with old Git
+	# installations. To use `simple` instead, add this to your `~/.extra` file:
+	# `git config --global push.default simple`. See http://git.io/mMah-w.
+	default = matching
+	##default = simple
+	# Make `git push` push relevant annotated tags when pushing branches out.
+	followTags = true
+
+# URL shorthands
+
+[url "git@github.com:"]
+
+	insteadOf = "gh:"
+	pushInsteadOf = "github:"
+	pushInsteadOf = "git://github.com/"
+
+[url "git://github.com/"]
+
+	insteadOf = "github:"
+
+[url "git@gist.github.com:"]
+
+	insteadOf = "gst:"
+	pushInsteadOf = "gist:"
+	pushInsteadOf = "git://gist.github.com/"
+
+[url "git://gist.github.com/"]
+
+	insteadOf = "gist:"
